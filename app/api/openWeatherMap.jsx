@@ -19,7 +19,7 @@ module.exports = {
             }
         }, function (res) {
             const response = res.response;
-            throw new error(response.data.message);
+            throw new Error(response.data.message);
         });
     }
 }
