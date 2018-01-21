@@ -17,9 +17,9 @@ module.exports = {
             } else {
                 return res.data.main.temp;
             }
-        }, function (res) {
-            const response = res.response;
-            throw new Error(response.data.message);
+        }, function (err) {
+            //const response = err.response;
+            throw new Error('Unable to fetch weather information for the location');
         });
     }
 }
