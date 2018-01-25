@@ -28,13 +28,31 @@ var Weather = React.createClass({
             debugger;
             that.setState({
                 isLoading: false,
-                errorMessage: message
+                errorMessage: message,
+                location: undefined,
+                temp: undefined
             });
         });
         // this.setState({
         //     location: location,
         //     temp: 23
         // });
+    },
+    componentDidMount: function () {
+        var location = this.props.location.query.location;
+
+        if (location && location.length > 0) {
+            this.handleSearch(location);
+            window.location.hash = '#/';
+        }
+    },
+    componentWillReceiveProps: function (newProps) {
+        var location = newProps.location.query.location;
+
+        if (location && location.length > 0) {
+            this.handleSearch(location);
+            window.location.hash = '#/';
+        }        
     },
     render: function () {
         var {isLoading, temp, location, errorMessage} = this.state;
@@ -48,16 +66,17 @@ var Weather = React.createClass({
         }
 
         function renderError () {
-            if (typeof errorMessage === 'string') {
+            if (typeof errorMessage === 'string' || typeof errorMessage === 'undefined') {
                 return (
-                    <ErrorModal message={errorMessage}/>
+                    // <ErrorModal message={errorMessage}/>
+                    <ErrorModal message='City not found'/>
                 )
             }
         }
 
         return (
             <div>
-                <h1 className="text-center">Get Weather</h1>
+                <h1 className="text-center page-title">Get Weather</h1>
                 <WeatherForm onSearch={this.handleSearch}/>
                 {renderMessage()}
                 {renderError()}
